@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+#canvas1 {
+    border: 10px solid black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 700px;
+    max-width: 100%;
+    max-height: 100%;
+    font-family: 'VT323', monospace;
+}
+
+#player, #food_yakisoba, #food_yakisaba, #background {
+    display: none;
+}
