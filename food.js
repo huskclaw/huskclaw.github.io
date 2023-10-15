@@ -1,15 +1,14 @@
 class Food {
     constructor(){
-        this.width = 50;
-        this.height = 50;
-        this.frameX = 0;
-        this.frameY = 0;
+        this.width = 100;
+        this.height = 100;     
+        this.y = -this.height;
         this.delete = false;
         this.angle = 5;
         this.va = Math.random() * 0.1 + 0.1;
     }
 
-    update(deltaTime){
+    update(){
         // movement
         this.x -= this.speedX;
         this.y += this.speedY;
@@ -36,10 +35,9 @@ export class YakisobaFood extends Food {
     constructor(game){
         super();
         this.game = game;
-        this.x = Math.random(1) * this.game.width * 0.9;
-        this.y = -50;
+        this.x = Math.random() * (this.game.width - this.width);
         this.speedX = 0;
-        this.speedY = 0.9;
+        this.speedY = 2;
         this.catch = true;
         this.image = document.getElementById('food_yakisoba');
     }
@@ -52,10 +50,9 @@ export class YakisabaFood extends Food {
     constructor(game){
         super();
         this.game = game;
-        this.x = Math.random(2) * this.game.width * 0.9;
-        this.y = -50;
+        this.x = Math.random() * (this.game.width - this.width);
         this.speedX = 0;
-        this.speedY = 1;
+        this.speedY = 2.5;
         this.catch = false;
         this.image = document.getElementById('food_yakisaba');
     }

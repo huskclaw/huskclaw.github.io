@@ -7,10 +7,11 @@ import { BGM } from './bgm.js';
 
 
 window.addEventListener('load', function(){
+    /** @type {HTMLCanvasElement} */
     const canvas = document.getElementById('canvas1');
     const ctx = canvas.getContext('2d');
-    canvas.width = 500;
-    canvas.height = 500;
+    canvas.width = 1080;
+    canvas.height = 1080;
 
     class Game {
         constructor(width, height){
@@ -95,13 +96,26 @@ window.addEventListener('load', function(){
 
     const game = new Game(canvas.width, canvas.height);
     console.log(game);
-    let lastTime = 0;
 
-    function animate(timeStamp){
-        const deltaTime = timeStamp - lastTime;
-        lastTime = timeStamp;
+    let time_step = 1000 / 60,
+    deltaTime = 0,
+    lastFrame_ms = 0, // last time the loop was run
+    max_FPS = 60; // max fps
+
+    function animate(timestamp){
+        if (timestamp < lastFrame_ms + (1000 / max_FPS)) {
+            requestAnimationFrame(animate);
+            return;
+        }
+        deltaTime += timestamp - lastFrame_ms;
+        lastFrame_ms = timestamp;
+
+        while (deltaTime >= time_step) {
+            game.update(time_step);
+            deltaTime -= time_step;
+        }
+        
         ctx.clearRect(0,0, canvas.width, canvas.height);
-        game.update(deltaTime);
         game.draw(ctx);
         if (!game.gameOver) requestAnimationFrame(animate);
     }
