@@ -22,7 +22,16 @@ class Food {
             if (this.x + this.width > this.game.width) {this.x-10;}
             else if(this.x < 0) {this.x+10;}
         }
-        if (this.y >= this.game.height) this.delete = true;
+        if (this.y >= this.game.height) {
+            this.delete = true;
+            if(this.catch){
+                if(this.game.score>0){
+                    this.game.score--;
+                } else{
+                    this.game.lives--;
+                }
+            }
+        }
         
     }
     draw(context){

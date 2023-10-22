@@ -17,8 +17,14 @@ export class Player{
         this.checkCollision();
         this.x += this.speed;
         // move
-        if(input.includes('ArrowRight') && this.x + this.width -10 <= this.game.width) this.speed = this.maxSpeed;
-        else if(input.includes('ArrowLeft') && this.x + 10 >= 0) this.speed = -this.maxSpeed;
+        if((      input.includes('ArrowRight') || input.includes('d')) 
+                  && this.x + this.width -10 <= this.game.width) {
+            this.speed = this.maxSpeed;
+        } 
+        else if(( input.includes('ArrowLeft') || input.includes('a'))
+                  && this.x + 10 >= 0) {
+            this.speed = -this.maxSpeed;
+        }
         else this.speed = 0;
     }
     draw(context){

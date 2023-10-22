@@ -15,6 +15,6 @@
     font-family: 'VT323', monospace;
 }
 
-#player, #food_yakisoba, #food_yakisaba, #background {
+#player, #food_yakisoba, #food_yakisaba, #background, #button, #button2, #bubble, #buletin {
     display: none;
 }
