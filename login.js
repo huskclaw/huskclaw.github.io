@@ -5,7 +5,7 @@ var TOKEN;
 async function loginUser(email, password) {
     try {
         const response = await axios.post(`${API_BASE_URL}/users/login`, { email, password });
-        ACCESS_TOKEN = response.data.data.access_token;
+        TOKEN = response.data.data.access_token;
         alert("Login Succeed!");
         window.location.href = "game.html";
     } catch (error) {
