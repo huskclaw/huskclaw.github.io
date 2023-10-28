@@ -1,0 +1,50 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 97vh;
+    margin: 0;
+  }
+  
+  .container {
+    width: 350px;
+  }
+  
+  .title {
+    text-align: center;
+  }
+  
+  .input-container {
+    margin-bottom: 10px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  button {
+    width: 373px;
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+  }
+  
+  button:hover {
+    background-color: #333;
+  }
+  
+  .login-link {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .login-link a {
+    color: #0073e6;
+    text-decoration: none;
+  }
+  
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+  
