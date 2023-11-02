@@ -42,6 +42,7 @@ window.addEventListener('load', function(){
             this.help = new Help(this);
             this.fgameover = new GameOver(this);
             this.bgmState = null; // 0=play, 1=win, 2=gameover, 3=story, 4=help
+            this.winScore = 15;
         }
         update(deltaTime){
             if(this.menuState == 0){
@@ -85,11 +86,9 @@ window.addEventListener('load', function(){
                         this.foodInterval = 1000;
                         this.droprate = 0.25;
                     }
-                    if (this.score == 15 || this.lives == 0) this.gameOver = true;
+                    if (this.score == this.winScore || this.lives == 0) this.gameOver = true;
                 }
                 else{
-                    // this.bgm.stopBGM();
-                    // this.bgm.playBGM(2);
                     if(this.lives==0) this.bgmState = 2;
                     else this.bgmState = 1;
                     
@@ -116,7 +115,6 @@ window.addEventListener('load', function(){
                 this.menu.draw(ctx);
             }
             else if(this.menuState == 1){ // play
-                // if(!this.gameOver)  {
                 this.background.draw(ctx);
                 this.player.draw(ctx);
                 this.foods.forEach(food => {
@@ -169,7 +167,6 @@ window.addEventListener('load', function(){
         
         ctx.clearRect(0,0, canvas.width, canvas.height);
         game.draw();
-        // if (!game.gameOver) requestAnimationFrame(animate);
         requestAnimationFrame(animate);
     }
     animate(0);

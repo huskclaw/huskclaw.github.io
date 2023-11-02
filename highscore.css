@@ -1,0 +1,17 @@
+.highscores-table {
+  border: 1px solid black;
+  margin: 0 auto;
+  width: 500px;
+}
+
+.highscores-table th,
+.highscores-table td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+.highscores-table th {
+  background-color: #d7d7d7;
+  font-weight: bold;
+}

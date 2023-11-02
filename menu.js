@@ -1,3 +1,16 @@
+async function getUserName(token) {
+    try {
+        const response = await axios.get(`https://ets-pemrograman-web-f.cyclic.app/users/profile`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data.data.nama;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export class Menu {
     constructor(game){
         this.game = game;
@@ -5,12 +18,27 @@ export class Menu {
         this.fontFamily = 'VT323';
         this.image = document.getElementById('button');
         this.buttonRect = [
-            { id: 'story', x: 420, y: 300, width: 240, height: 80},
-            { id: 'play', x: 420, y: 450, width: 240, height: 80},
-            { id: 'help', x: 420, y: 600, width: 240, height: 80}
+            { id: 'story', x: 420, y: 150, width: 240, height: 80},
+            { id: 'play', x: 420, y: 300, width: 240, height: 80},
+            { id: 'help', x: 420, y: 450, width: 240, height: 80},
+            { id: 'highscore', x: 420, y: 600, width: 240, height: 80},
+            { id: 'login', x: 950, y: 10, width: 120, height: 40}
         ];
+        this.MenuGetUserName();
     }
-    draw(context){
+    async MenuGetUserName() {
+        const token = localStorage.getItem('accessToken')
+        if(token!='null') {
+            this.userName = await getUserName(token);
+            localStorage.setItem('username', this.userName);
+            this.game.fgameover.username = this.userName;
+        } else {
+            this.userName = 'Hooman'
+            localStorage.setItem('username', null);
+        }
+
+    }
+    async draw(context){
         context.font = this.fontSize+'px '+this.fontFamily;
         context.textAlign = 'center';
         context.fillStyle = 'rgb(84, 84, 84)';
@@ -19,9 +47,17 @@ export class Menu {
             context.drawImage(this.image, button.x, button.y, button.width, button.height);
         });
 
-        context.fillText('Story', 540, 350);
-        context.fillText('Play', 540, 500);
-        context.fillText('Help', 540, 650);
+        context.fillText('Story', 540, 200);
+        context.fillText('Play', 540, 350);
+        context.fillText('Help', 540, 500);
+        context.fillText('High Score', 540, 650);
+        
+        context.fillStyle = 'rgb(29, 37, 46)';
+        if(this.userName==undefined) this.userName = "Hooman";
+        context.fillText(`Welcome, ${this.userName}!`, 540, 80);
+
+        context.font = 25+'px '+this.fontFamily;
+        context.fillText('Log Out', 1010, 35);
     }
     update(input){
         if(input.length!= 0){
@@ -34,9 +70,6 @@ export class Menu {
                     y >= button.y &&
                     y <= button.y + button.height
                 ) {
-                    // Handle the click for the clicked button
-                    // For example, you can call a function or trigger an event.
-                    // console.log('Clicked ' + button.id);
                     if(button.id == "story"){
                         this.game.menuState = 2;
                     }
@@ -45,6 +78,12 @@ export class Menu {
                     }
                     else if(button.id == "help"){
                         this.game.menuState = 3;
+                    }
+                    else if(button.id == "highscore"){
+                        window.open('highscore.html', '_blank');
+                    }
+                    else if(button.id == "login"){
+                        window.location.href = "index.html";
                     }
                 }
             });

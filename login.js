@@ -1,29 +1,32 @@
-const API_BASE_URL = 'https://ets-pemrograman-web-f.cyclic.app';
-var TOKEN;
-
-// Define a separate async function for the API request
-async function loginUser(email, password) {
-    try {
-        const response = await axios.post(`${API_BASE_URL}/users/login`, { email, password });
-        TOKEN = response.data.data.access_token;
-        alert("Login Succeed!");
-        window.location.href = "game.html";
-    } catch (error) {
-        alert(error);
-    }
-}
-
 document.addEventListener("DOMContentLoaded", function () {
     const registerForm = document.getElementById("loginForm");
 
-    registerForm.addEventListener("submit", function (e) {
+    registerForm.addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        // Get user input
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
-        // Call the async function to handle the API request
-        loginUser(email, password);
+        const response = await axios.post('https://ets-pemrograman-web-f.cyclic.app/users/login', {
+            email,
+            password
+        });
+
+        if (response.data.status == 'success') {
+            localStorage.setItem('accessToken', response.data.data.access_token);
+            alert('Login success!');
+            window.location.href = "game.html";
+        } else {
+            alert(response.data.error);
+        }
+    });
+
+    const playguestLink = document.querySelector(".play-guest a");
+
+    playguestLink.addEventListener("click", function (e) {
+        localStorage.setItem('accessToken', null);
+        window.location.href = "game.html";
+
+        e.preventDefault();
     });
 });
