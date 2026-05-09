@@ -222,6 +222,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const progress = Math.min(elapsed / totalDuration, 1);
             const eased = easeOutCubic(progress);
 
+            // Sync audio playback rate with wheel deceleration
+            // Derivative of 1-(1-t)^3 is 3(1-t)^2. We map speed to playbackRate [0.5, 1.2]
+            const currentSpeedFactor = Math.pow(1 - progress, 2);
+            if (spinSound && !spinSound.paused) {
+                spinSound.playbackRate = 0.5 + (0.7 * currentSpeedFactor);
+            }
+
             wheelAngle = startAngle + totalRotation * eased;
             drawWheel(wheelAngle);
 
@@ -229,6 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 wheelAnimId = requestAnimationFrame(animate);
             } else {
                 wheelAnimId = null;
+                if (spinSound) spinSound.playbackRate = 1.0; // Reset for next spin
                 callback();
             }
         }
@@ -245,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         isSpinning = true;
         spinBtn.disabled = true;
+        if (spinSound) spinSound.preservesPitch = false;
         tryPlay(spinSound);
 
         const result = sequence[currentSpinIndex];
@@ -285,7 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function triggerCandy(result) {
         candyTitle.textContent = result.name;
         candyOverlay.classList.remove('hidden');
-        tryPlay(revealSound);
     }
 
     closeCandyBtn.addEventListener('click', () => {
