@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gacha Wheel Spin</title>
+    <meta name="description" content="A premium gacha wheel spin experience with exciting prizes!">
+    <link rel="stylesheet" href="src/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated background particles -->
+    <canvas id="particles"></canvas>
+
+    <div id="app">
+        <!-- Main Wheel Section -->
+        <div id="main-screen">
+            <header>
+                <h1>✦ Gacha Spin ✦</h1>
+                <div id="spin-counter-box">
+                    <span class="label">Pulls Remaining</span>
+                    <span id="spins-left">10</span>
+                </div>
+            </header>
+
+            <div class="wheel-area">
+                <div class="wheel-glow"></div>
+                <div class="wheel-container">
+                    <div class="pointer-wrapper">
+                        <div class="pointer"></div>
+                    </div>
+                    <div class="wheel-border">
+                        <canvas id="wheel-canvas" width="400" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <button id="spin-button" class="btn-primary">
+                <span class="btn-icon">✦</span> SPIN <span class="btn-icon">✦</span>
+            </button>
+        </div>
+
+        <!-- 3-Star (Candy) Quick Reveal Overlay -->
+        <div id="candy-overlay" class="overlay hidden">
+            <div id="candy-reveal-box">
+                <div class="rarity-badge rarity-3">★★★</div>
+                <div id="candy-icon">🍬</div>
+                <h2 id="candy-title">Candy</h2>
+                <button id="close-candy" class="btn-secondary">Continue</button>
+            </div>
+        </div>
+
+        <!-- 4-Star / 5-Star Gacha Animation Overlay -->
+        <div id="gacha-overlay" class="overlay hidden">
+            <!-- Phase 1: Meteor streak -->
+            <div id="meteor-phase">
+                <div id="meteor"></div>
+            </div>
+            <!-- Phase 2: Silhouette -->
+            <div id="silhouette-phase" class="hidden">
+                <img id="gacha-silhouette" src="" alt="">
+            </div>
+            <!-- Phase 3: Reveal -->
+            <div id="reveal-phase" class="hidden">
+                <div id="reveal-flash"></div>
+                <div class="rarity-badge" id="reveal-rarity-badge"></div>
+                <img id="gacha-reveal" src="" alt="Prize">
+                <h2 id="gacha-title"></h2>
+                <button id="close-gacha" class="btn-secondary">Continue</button>
+            </div>
+        </div>
+
+        <!-- Rickroll Overlay (fullscreen gif + audio) -->
+        <div id="rickroll-overlay" class="overlay hidden">
+            <img id="rickroll-gif" src="" alt="Rickroll">
+            <audio id="rickroll-audio" src="assets/rickroll.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Just Kidding popup - appears over main screen after rickroll ends -->
+        <div id="rickroll-message" class="hidden">
+            <h2>Just Kidding!</h2>
+            <p>Here's another chance to spin.</p>
+            <button id="close-rickroll" class="btn-primary">Claim Bonus Spin</button>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bgm" src="assets/bgm.mp3" loop preload="auto"></audio>
+    <audio id="spin-sound" src="assets/spin.mp3" preload="auto"></audio>
+    <audio id="pull-sound" src="assets/pull.mp3" preload="auto"></audio>
+    <audio id="reveal-sound" src="assets/reveal.mp3" preload="auto"></audio>
+
+    <script src="src/main.js"></script>
+</body>
+</html>

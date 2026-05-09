@@ -1,0 +1,473 @@
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+    --bg-deep: #020617;
+    --bg-mid: #0f172a;
+    --text: #f1f5f9;
+    --text-dim: #64748b;
+    --gold: #fbbf24;
+    --gold-glow: rgba(251, 191, 36, 0.5);
+    --purple: #a855f7;
+    --purple-glow: rgba(168, 85, 247, 0.5);
+    --blue: #3b82f6;
+    --blue-glow: rgba(59, 130, 246, 0.4);
+    --wheel-size: min(350px, 80vw);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+    margin: 0; padding: 0; box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg-deep);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+#particles {
+    position: fixed; inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+#app {
+    position: relative;
+    z-index: 1;
+    width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+}
+
+/* ============================================================
+   MAIN SCREEN
+   ============================================================ */
+#main-screen {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 1.5rem;
+}
+
+header {
+    text-align: center;
+}
+
+header h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+#spin-counter-box {
+    display: inline-flex; flex-direction: column; align-items: center;
+    margin-top: 0.75rem;
+    padding: 0.5rem 1.5rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+}
+
+#spin-counter-box .label {
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-dim);
+}
+
+#spins-left {
+    font-size: 2rem; font-weight: 900; color: var(--text);
+    transition: color 0.4s, text-shadow 0.4s;
+}
+
+#spins-left.golden {
+    color: var(--gold);
+    text-shadow: 0 0 20px var(--gold-glow);
+}
+
+/* ============================================================
+   WHEEL
+   ============================================================ */
+.wheel-area {
+    position: relative;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.wheel-glow {
+    position: absolute;
+    width: calc(var(--wheel-size) + 60px);
+    height: calc(var(--wheel-size) + 60px);
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+    animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 1; }
+}
+
+.wheel-container {
+    position: relative;
+    width: var(--wheel-size); height: var(--wheel-size);
+}
+
+.wheel-border {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    border: 6px solid rgba(255,255,255,0.15);
+    box-shadow:
+        0 0 0 3px rgba(59,130,246,0.3),
+        0 0 40px rgba(59,130,246,0.2),
+        inset 0 0 30px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+#wheel-canvas {
+    width: 100%; height: 100%;
+    display: block;
+}
+
+.pointer-wrapper {
+    position: absolute;
+    top: -18px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+}
+
+.pointer {
+    width: 36px; height: 36px;
+    background: linear-gradient(180deg, #fff 0%, #cbd5e1 100%);
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+button {
+    cursor: pointer; border: none; outline: none;
+    font-family: 'Inter', sans-serif; font-weight: 700;
+    transition: all 0.25s ease;
+}
+
+.btn-primary {
+    padding: 1rem 2.5rem;
+    font-size: 1.3rem;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+    box-shadow: 0 4px 20px var(--blue-glow);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    transition: none;
+}
+
+.btn-primary:hover::after {
+    animation: btnShine 0.6s ease forwards;
+}
+
+@keyframes btnShine {
+    to { transform: translateX(100%); }
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 30px var(--blue-glow);
+}
+
+.btn-primary:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-primary:disabled {
+    background: #334155; color: #64748b;
+    box-shadow: none; transform: none;
+    cursor: not-allowed;
+}
+
+.btn-primary:disabled::after { display: none; }
+
+.btn-icon {
+    font-size: 0.9em;
+}
+
+.btn-secondary {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+}
+
+/* ============================================================
+   OVERLAY BASE
+   ============================================================ */
+.overlay {
+    position: fixed; inset: 0;
+    z-index: 100;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+}
+
+.overlay.hidden { display: none !important; }
+
+.hidden { display: none !important; }
+
+/* ============================================================
+   3-STAR (CANDY) QUICK REVEAL
+   ============================================================ */
+#candy-overlay {
+    background: rgba(0,0,0,0.85);
+    animation: overlayIn 0.3s ease-out;
+}
+
+#candy-reveal-box {
+    text-align: center;
+    animation: candyPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes candyPop {
+    0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+#candy-icon {
+    font-size: 8rem;
+    margin: 1rem 0;
+    animation: candyBounce 1s ease-in-out infinite;
+}
+
+@keyframes candyBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+#candy-title {
+    font-size: 2.5rem; font-weight: 900;
+    color: #94a3b8;
+    text-shadow: 0 0 15px rgba(148, 163, 184, 0.4);
+    margin-bottom: 1.5rem;
+}
+
+.rarity-badge {
+    font-size: 1.5rem; letter-spacing: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.rarity-3 { color: #94a3b8; text-shadow: 0 0 10px rgba(148,163,184,0.5); }
+.rarity-4 { color: var(--purple); text-shadow: 0 0 15px var(--purple-glow); }
+.rarity-5 { color: var(--gold); text-shadow: 0 0 20px var(--gold-glow); }
+
+/* ============================================================
+   4-STAR / 5-STAR GACHA OVERLAY
+   ============================================================ */
+#gacha-overlay {
+    background: #000;
+}
+
+/* --- Meteor Phase --- */
+#meteor-phase {
+    position: absolute; inset: 0;
+    overflow: hidden;
+}
+
+#meteor {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+#meteor.animate-4star {
+    background: var(--purple);
+    box-shadow: 0 0 20px 8px var(--purple), 0 0 60px 20px var(--purple-glow);
+    animation: meteorStreak4 1.8s ease-in-out forwards;
+}
+
+#meteor.animate-5star {
+    background: var(--gold);
+    box-shadow: 0 0 30px 12px var(--gold), 0 0 80px 30px var(--gold-glow);
+    animation: meteorStreak5 2.2s ease-in-out forwards;
+}
+
+@keyframes meteorStreak4 {
+    0%   { top: 110%; left: -10%; opacity: 0; transform: scale(1); }
+    10%  { opacity: 1; }
+    50%  { top: 50%; left: 50%; transform: scale(3); opacity: 1; }
+    70%  { transform: scale(6); opacity: 0.8; }
+    85%  { transform: scale(30); opacity: 0; }
+    100% { transform: scale(30); opacity: 0; }
+}
+
+@keyframes meteorStreak5 {
+    0%   { top: 110%; left: -10%; opacity: 0; transform: scale(1); }
+    8%   { opacity: 1; }
+    45%  { top: 50%; left: 50%; transform: scale(4); opacity: 1; }
+    65%  { transform: scale(8); opacity: 0.9; }
+    80%  { transform: scale(50); opacity: 0; }
+    100% { transform: scale(50); opacity: 0; }
+}
+
+/* --- Silhouette Phase --- */
+#silhouette-phase {
+    position: absolute; inset: 0;
+    display: flex; justify-content: center; align-items: center;
+    background: radial-gradient(circle, rgba(20,20,40,0.9) 0%, #000 70%);
+}
+
+#gacha-silhouette {
+    max-width: 50%; max-height: 55vh;
+    object-fit: contain;
+    animation: silPulse 1.5s ease-in-out infinite;
+}
+
+#gacha-silhouette.sil-4star {
+    filter: brightness(0) drop-shadow(0 0 25px var(--purple)) drop-shadow(0 0 50px var(--purple-glow));
+}
+
+#gacha-silhouette.sil-5star {
+    filter: brightness(0) drop-shadow(0 0 35px var(--gold)) drop-shadow(0 0 70px var(--gold-glow));
+}
+
+@keyframes silPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+}
+
+/* --- Reveal Phase --- */
+#reveal-phase {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    gap: 0.5rem;
+}
+
+#reveal-flash {
+    position: absolute; inset: 0;
+    background: white;
+    animation: flashBurst 0.8s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes flashBurst {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+#gacha-reveal {
+    max-width: 60%; max-height: 50vh;
+    object-fit: contain;
+    animation: revealPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    z-index: 1;
+}
+
+@keyframes revealPop {
+    0% { transform: scale(0.3); opacity: 0; }
+    60% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+#reveal-rarity-badge {
+    font-size: 2rem; letter-spacing: 5px; z-index: 1;
+}
+
+#gacha-title {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    z-index: 1;
+    animation: titleFadeUp 0.8s ease-out 0.3s both;
+}
+
+#gacha-title.title-4star { color: var(--purple); text-shadow: 0 0 30px var(--purple-glow); }
+#gacha-title.title-5star { color: var(--gold); text-shadow: 0 0 40px var(--gold-glow); }
+
+@keyframes titleFadeUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+#close-gacha {
+    z-index: 1; margin-top: 1rem;
+    animation: titleFadeUp 0.8s ease-out 0.6s both;
+}
+
+/* ============================================================
+   RICKROLL OVERLAY
+   ============================================================ */
+#rickroll-overlay {
+    background: #000;
+}
+
+#rickroll-gif {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+}
+
+#rickroll-message {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 2.5rem 3rem;
+    background: rgba(10, 14, 30, 0.92);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 1.5rem;
+    backdrop-filter: blur(20px);
+    z-index: 200;
+    animation: msgSlideUp 0.5s ease-out forwards;
+}
+
+@keyframes msgSlideUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+#rickroll-message h2 {
+    font-size: 2.5rem; color: var(--gold);
+    text-shadow: 0 0 20px var(--gold-glow);
+    margin-bottom: 0.75rem;
+}
+
+#rickroll-message p {
+    font-size: 1.2rem; color: var(--text-dim);
+    margin-bottom: 1.5rem;
+}
+
+/* ============================================================
+   OVERLAY ENTRANCE
+   ============================================================ */
+@keyframes overlayIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
