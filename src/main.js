@@ -87,9 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (ok) { seq = pool; break; }
         }
         // Spin 10 = Rickroll (wheel visually lands on 5* but it's a prank)
-        // Spin 11 = Real 5* Lego
+        // Spin 11 = Real 5* Mystery Gift
         seq.push({ type: 'rickroll' });
-        seq.push({ type: 5, name: 'Lego F1 Car', img: 'assets/lego.png' });
+        seq.push({ type: 5, name: 'Mystery Gift', img: 'assets/mystery.png' });
         return seq;
     }
 
